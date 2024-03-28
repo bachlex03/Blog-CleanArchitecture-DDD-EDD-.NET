@@ -10,15 +10,8 @@ namespace Blog.Api.controllers
 {
     [ApiController]
     [Route("auth")]
-    public class AuthController : ControllerBase
+    public class AuthController(IAuthService _authService) : ControllerBase
     {
-        private readonly IAuthService _authService;
-
-        public AuthController(IAuthService authService)
-        {
-            _authService = authService;
-        }
-
         [HttpPost("register")]
         public IActionResult Register(RegisterRequest request)
         {
@@ -26,7 +19,7 @@ namespace Blog.Api.controllers
 
             var response = new AuthResponse(authResult.FirstName, authResult.LastName, authResult.Email, authResult.Token);
 
-            return Ok(request);
+            return Ok(response);
         }
 
         [HttpPost("login")]

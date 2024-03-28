@@ -1,10 +1,12 @@
+using Blog.Api.Contracts.Auth;
 using Blog.Application;
+using Blog.Infrastructure;
 
 
 var builder = WebApplication.CreateBuilder(args);
 // this builder can use for configuration and dependency injection
 {
-    builder.Services.AddApplication();
+    builder.Services.AddApplication().AddInfrastructure();
     builder.Services.AddControllers();
 }
 
@@ -13,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
     // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
-}
+};
 
 var app = builder.Build();
 
