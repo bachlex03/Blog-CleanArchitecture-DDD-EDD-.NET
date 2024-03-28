@@ -1,6 +1,10 @@
+using Blog.Application;
+
+
 var builder = WebApplication.CreateBuilder(args);
 // this builder can use for configuration and dependency injection
 {
+    builder.Services.AddApplication();
     builder.Services.AddControllers();
 }
 
@@ -19,7 +23,6 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 
 {
     app.UseHttpsRedirection();
