@@ -27,7 +27,7 @@ namespace Blog.Domain.Example.Order
 
         public void Add(Product product)
         {
-            var lineItems = new LineItem(Guid.NewGuid(), this.Id, product.Id, product.Price);
+            var lineItems = new LineItem(Guid.NewGuid(), Id, product.Id, product.Price);
 
             this.LineItems.Add(lineItems);
         }
