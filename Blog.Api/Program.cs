@@ -1,11 +1,15 @@
 using Blog.Api.Contracts.Auth;
 using Blog.Application;
 using Blog.Infrastructure;
+using Blog.Infrastructure.data;
+using Microsoft.EntityFrameworkCore;
 
 
 var builder = WebApplication.CreateBuilder(args);
 // this builder can use for configuration and dependency injection
 {
+    builder.Services.AddDbContext<CustomerDbContext>(options => options.UseSqlite(@"Data Source=customer.db"));
+
     builder.Services.AddApplication().AddInfrastructure();
     builder.Services.AddControllers();
 }
@@ -22,6 +26,10 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    using var scope = app.Services.CreateScope();
+    var dbContext = scope.ServiceProvider.GetRequiredService<CustomerDbContext>();
+    dbContext.Database.EnsureCreated();
+
     app.UseSwagger();
     app.UseSwaggerUI();
 }
