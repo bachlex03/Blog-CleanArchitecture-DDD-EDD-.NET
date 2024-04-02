@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Blog.Api.controllers
 {
     [ApiController]
-    [Route("auth")]
+    [Route("api/v1/auth")]
     public class AuthController : ControllerBase
     {
 
@@ -36,6 +36,7 @@ namespace Blog.Api.controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginRequest request)
         {
+
             await _rabbitUtil.PublishRabbitMessageQueue("api.auth", "Login");
 
             return Ok(123);
