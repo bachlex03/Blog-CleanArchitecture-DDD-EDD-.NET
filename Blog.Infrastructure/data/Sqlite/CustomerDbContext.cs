@@ -15,7 +15,7 @@ namespace Blog.Infrastructure.data.Sqlite
         {
 
         }
-
+        // 
         public DbSet<Customer> Customers { get; set; }
     }
 }

@@ -8,6 +8,8 @@ using Blog.Infrastructure.RabbitMq;
 using RabbitMQ.Client;
 using Blog.Domain;
 using Blog.Infrastructure.data.Sqlite;
+using Blog.Domain.Example.Customers;
+using Blog.Infrastructure.data.postgres;
 
 public static class DependencyInjection
 {
@@ -18,9 +20,8 @@ public static class DependencyInjection
         services.AddScoped<IAuthService, AuthService>();
 
         services.AddScoped<IProductRepository, ProductRepository>();
-
         services.AddScoped<ICustomerRepository, CustomerRepository>();
-
+        services.AddScoped<ICustomerRepositoryPostgres, CustomerRepositoryPostgres>();
 
         // Register RabbitMqUtil
         services.AddSingleton<IRabbitMqUtil, RabbitMqUtil>().AddHostedService<RabbitMqService>();

@@ -1,11 +1,19 @@
 using Blog.Application;
 using Blog.Infrastructure;
+using Blog.Infrastructure.data.postgres;
 using Blog.Infrastructure.data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 
 
 var builder = WebApplication.CreateBuilder(args);
 {
+    var conn = builder.Configuration.GetConnectionString("CleanArchitecture");
+
+    // Postgres database
+    builder.Services.AddDbContext<AppDbContext>(option => option.UseNpgsql(conn));
+
+    // SQLite database
     builder.Services.AddDbContext<CustomerDbContext>(options => options.UseSqlite(@"Data Source=customer.db"));
 
     builder.Services.AddApplication().AddInfrastructure();

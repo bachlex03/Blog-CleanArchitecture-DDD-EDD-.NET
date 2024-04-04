@@ -1,9 +1,8 @@
 
 using MediatR;
-using Productt = Blog.Domain.Product;
-
 using ErrorOr;
 using Blog.Domain;
+using Productt = Blog.Domain.Product;
 
 namespace Blog.Application.Product.Command
 {
