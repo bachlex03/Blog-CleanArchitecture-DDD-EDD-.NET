@@ -1,8 +1,7 @@
 
-using Blog.Domain.ExampleCustomer;
-using Blog.Domain.ExampleProduct;
+using Blog.Domain;
 
-namespace Blog.Domain.Example.Order
+namespace Blog.Domain.Order
 {
     public class Order
     {

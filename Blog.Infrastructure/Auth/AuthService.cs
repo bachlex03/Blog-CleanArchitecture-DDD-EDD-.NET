@@ -1,27 +1,39 @@
-namespace Blog.Infrastructure.Auth;
-
-using Blog.Application.Auth;
 using Blog.Application.Common.Interfaces.Auth;
+using Blog.Domain;
+using ErrorOr;
 
-public class AuthService(IJwtGenerator _jwtGenerator) : IAuthService
+namespace Blog.Infrastructure.Auth
 {
-    public AuthResult Register(string FirstName, string LastName, string Email, string Password)
+    public class AuthService : IAuthService
     {
-        // 1. Check if the user already exists
+        private readonly ICustomerRepository _customerRepository;
+        private readonly IJwtGenerator _jwtGenerator;
 
-        // 2. Create a new user
-        var userId = Guid.NewGuid();
+        public AuthService(ICustomerRepository customerRepository, IJwtGenerator jwtGenerator)
+        {
+            _customerRepository = customerRepository;
+            _jwtGenerator = jwtGenerator;
+        }
 
-        // 3. Create JWT token
-        var token = _jwtGenerator.JwtGenerator(userId, "Bach", "Le");
+        public Task<ErrorOr<string>> Login(string Email, string Password)
+        {
+            throw new NotImplementedException();
+        }
 
-        return new AuthResult(userId, FirstName, LastName, Email, token);
+        public async Task<ErrorOr<string>> Register(string FirstName, string LastName, string Email, string Password)
+        {
+            Boolean isExist = await _customerRepository.CheckEmail(Email);
+
+            if (!isExist)
+            {
+                return Error.Conflict("Email already exists");
+            }
+
+            var customer = new Customer(Guid.NewGuid(), FirstName, LastName, Email, Password);
+
+            await _customerRepository.Create(customer);
+
+            return _jwtGenerator.JwtGenerator(FirstName, LastName, Email);
+        }
     }
-
-    public AuthResult Login(string Email, string Password)
-    {
-        return new AuthResult(Guid.NewGuid(), "Bach", "Le", Email, "sample_token");
-    }
-
-
 }

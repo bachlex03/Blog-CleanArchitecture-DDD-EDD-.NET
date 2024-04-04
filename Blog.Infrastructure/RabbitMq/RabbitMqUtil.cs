@@ -1,13 +1,15 @@
 using System.Text;
 using Blog.Application.services.RabbitMq;
 using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
 
-namespace Blog.Infrastructure.RabbitMqUtilTest
+namespace Blog.Infrastructure.RabbitMq
 {
     public class RabbitMqUtil : IRabbitMqUtil
     {
         public async Task PublishRabbitMessageQueue(string routingKey, string evenData)
         {
+            Console.WriteLine("evenData: " + evenData);
             var factory = new ConnectionFactory
             {
                 HostName = "localhost",
@@ -21,11 +23,28 @@ namespace Blog.Infrastructure.RabbitMqUtilTest
 
             var body = Encoding.UTF8.GetBytes(evenData);
 
-            Console.WriteLine("routingKey ", routingKey);
-            Console.WriteLine("body ", body);
+            Console.WriteLine("routingKey: " + routingKey);
+            Console.WriteLine("body: " + body);
 
 
             channel.BasicPublish(exchange: "example.exchange", routingKey: routingKey, basicProperties: null, body: body);
+
+            await Task.CompletedTask;
+        }
+
+        public async Task ListenRabbitMessageQueue(IModel channel, string routingKey, CancellationToken stoppingToken)
+        {
+            var consumer = new AsyncEventingBasicConsumer(channel);
+
+            consumer.Received += async (channel, ea) =>
+            {
+                var body = Encoding.UTF8.GetString(ea.Body.ToArray());
+
+                // some logic
+                Console.WriteLine("ListenRabbitMessageQueue body:" + body);
+            };
+
+            channel.BasicConsume(queue: "api.auth", autoAck: true, consumer: consumer);
 
             await Task.CompletedTask;
         }

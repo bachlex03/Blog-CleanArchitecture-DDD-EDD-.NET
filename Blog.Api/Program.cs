@@ -1,12 +1,10 @@
-using Blog.Api.Contracts.Auth;
 using Blog.Application;
 using Blog.Infrastructure;
-using Blog.Infrastructure.data;
+using Blog.Infrastructure.data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
 
 var builder = WebApplication.CreateBuilder(args);
-// this builder can use for configuration and dependency injection
 {
     builder.Services.AddDbContext<CustomerDbContext>(options => options.UseSqlite(@"Data Source=customer.db"));
 

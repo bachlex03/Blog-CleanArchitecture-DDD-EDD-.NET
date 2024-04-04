@@ -1,13 +1,16 @@
-
-using Blog.Domain.ExampleCustomer;
-using Blog.Infrastructure.data;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Blog.Domain;
+using Blog.Infrastructure.data.Sqlite;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace Blog.Api.Example.Controllers
+namespace Blog.Api.Controllers
 {
     [ApiController]
-    [Route("api/v1/customers")]
+    [Route("api/v1/users")]
     public class CustomerController : ControllerBase
     {
         private readonly CustomerDbContext _customerDbContext;
@@ -18,7 +21,7 @@ namespace Blog.Api.Example.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
+        public async Task<ActionResult<IEnumerable<Customer>>> GetUsers()
         {
             return await _customerDbContext.Customers.ToListAsync();
         }
